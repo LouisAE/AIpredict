@@ -30,36 +30,34 @@ def get(T,ID="usd",headers=headers):
     target=re.findall(r'((\d)+.(\d)+)|-',str(M))
     target=[i[0] if i[0]!="" else "-" for i in target]
     target.insert(0,T)
-    time.sleep(random.randint(0,5))
+    time.sleep(random.randint(10,50)/10)
     return target
 
-def write2f(address):
-    with open(address,"w") as f:
+def write2f(adress):
+    with open(adress,"w") as f:
         writer=csv.writer(f,delimiter="\t")
         writer.writerow(csvHeaders)
         for T in timeGet():
             writer.writerow(get(T,ID=ID))
             print("%s finish"%T)
 
-def add2f(address):
+def add2f(adress):
     lastDate=None
     old=None
-    with open(address,"r") as f:
+    with open(adress,"r") as f:
         old=list(csv.reader(f,delimiter="\t"))
         lastDate=tuple(int(i) for i in old[-2][0].split("-"))
-    with open(address,"a") as f:
+    with open(adress,"a") as f:
         writer=csv.writer(f,delimiter="\t")
         for T in timeGet(lastDate):
             writer.writerow(get(T,ID=ID))
             print("%s finish"%T)
 
 if __name__=="__main__":
-    #ID=input("?:")
-    #ID="gbp"
-    ID="usd"
-    address="./data/Analysis/%s.csv"%ID
-    if os.path.exists(address):
-        add2f(address)
+    ID=input("?:")
+    adress="./data/Analysis/%s.csv"%ID
+    if os.path.exists(adress):
+        add2f(adress)
     else:
-        write2f(address)
+        write2f(adress)
     #print(get(url+"2006-1-4"))
